@@ -11,7 +11,7 @@ import com.SpringBoot.API.model.ParkingStatus;
 
 public class CarParkingList implements ICarParkingList {
 
-	private List<CarPark> carparkinglist;
+	private List<CarPark> carparkinglists;
 	Date date = new Date();
 	
 	public CarParkingList(){
@@ -19,18 +19,16 @@ public class CarParkingList implements ICarParkingList {
 	}
 	
 	public void CarParkList(){
-		carparkinglist = new ArrayList<CarPark>();
+		carparkinglists = new ArrayList<CarPark>();
 		CarPark value1 = new CarPark();
 		value1.setID(1);
-		value1.setStartTime(date);
 		value1.setNumberOfHours(4);
 		value1.setCarNumber("KA 1111");
 		value1.setStatus(ParkingStatus.ALLOCATED);
 		value1.setTicketNumber("A12345");
 		
 		CarPark value2 = new CarPark();
-		value2.setID(2);
-		value2.setStartTime(date);
+		value2.setID(2);;
 		value2.setNumberOfHours(4);
 		value2.setCarNumber("KA 2222");
 		value2.setStatus(ParkingStatus.ALLOCATED);
@@ -38,51 +36,54 @@ public class CarParkingList implements ICarParkingList {
 		
 		CarPark value3 = new CarPark();
 		value3.setID(3);
-		value3.setStartTime(date);
 		value3.setNumberOfHours(5);
 		value3.setCarNumber("KA 3333");
 		value3.setStatus(ParkingStatus.ALLOCATED);
 		value3.setTicketNumber("C12345");
 		
-		carparkinglist.add(value1);
-		carparkinglist.add(value2);
-		carparkinglist.add(value3);
+		carparkinglists.add(value1);
+		carparkinglists.add(value2);
+		carparkinglists.add(value3);
 	}
 	
 	public List<CarPark> getCarPArlingList(){
-		return this.carparkinglist;
+		return this.carparkinglists;
 	}
 
-	public CarPark GenerateParkingTicket(CarPark carPark) {
-		if(carPark == null) {
-			return carPark;
-		}
+	public CarPark GenerateParkingTicket(int parkingSlotID, int NumberOfHours, String CarNumber) {
+		
+		CarPark carPark = new CarPark();
+		carPark.setID(parkingSlotID);
+		carPark.setNumberOfHours(NumberOfHours);
+		carPark.setCarNumber(CarNumber);
 		carPark.setStatus(ParkingStatus.ALLOCATED);
 		carPark.setTicketNumber("A45678");
+		carPark.setMessage("Parking slot is allocated");
 		return carPark;
 	}
 
-	public CarPark ResetParkingDetail(int ID) throws Exception {
-		CarPark carPark = null;
-		if(ID<0 && ID > 400) {
-			throw new Exception("Invalid Parking Slot");
+	public CarPark ResetParkingDetail(int ID){
+		CarPark carPark = carparkinglists.stream().filter(list -> list.getID() == ID).findAny().orElse(null);
+		if(carPark == null) {
+			return null;
 		}
-		if(ID != 0) {
-			carPark = new CarPark();
-			carPark = carparkinglist.stream().filter(list -> list.getID() == ID).findAny().orElse(null);
-			carPark.setNumberOfHours(0);
-			carPark.setCarNumber(null);
-			carPark.setStatus(ParkingStatus.AMENDED);
-			carPark.setTicketNumber(null);
-		}
+		carPark.setNumberOfHours(0);
+		carPark.setCarNumber(null);
+		carPark.setStatus(ParkingStatus.AMENDED);
+		carPark.setTicketNumber(null);
+		carPark.setMessage("Parking slot is available");
 		return carPark;
 	}
 	
-	public CarPark GenerateParkingTicketForReAllocation(CarPark carPark) {
-		Date date = new Date();
+	public CarPark GenerateParkingTicketForReAllocation(int ParkingSlotID) {
+		
+		CarPark carPark = carparkinglists.stream().filter(list -> list.getID() == ParkingSlotID).findAny().orElse(null);
+		if(carPark == null) {
+			return carPark;
+		}
 		carPark.setStatus(ParkingStatus.REALLOCATED);
 		carPark.setTicketNumber("A45679");
-		carPark.setStartTime(date);
+		carPark.setMessage("Parking slot is reallocated");
 		
 		return carPark;		
 	}

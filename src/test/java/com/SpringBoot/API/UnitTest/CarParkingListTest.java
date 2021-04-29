@@ -7,6 +7,7 @@ import java.util.Date;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.SpringBoot.API.Helper.CarParkHelper;
 import com.SpringBoot.API.Interface.ICarParkingList;
 import com.SpringBoot.API.model.CarPark;
 import com.SpringBoot.API.model.ParkingStatus;
@@ -14,71 +15,57 @@ import com.SpringBoot.API.services.CarParkingList;
 
 public class CarParkingListTest {
 
-	private ICarParkingList _carParkingList;
-	private Date date = new Date();
+	private ICarParkingList carParkingList;
 	
 	@Before
 	public void setUp() throws Exception {
-		_carParkingList = new CarParkingList();
-	}
-	
-	@Test
-	public void WhenUserbookFirstTimeParkingSlotAndCarParkModelIsEmpty() {
-		//Given: When user allocate the parking space
-		CarPark carpark = null;
-		
-		//when: call method to allocate the car park
-		CarPark expected = _carParkingList.GenerateParkingTicket(carpark);
-		
-		//then: Parking status should be changed and Ticket number should be generated
-		assertEquals(null, expected);
+		carParkingList = new CarParkingList();
 	}
 	
 	@Test
 	public void WhenUserBookFirstTimeParkingSlotAndCarParkModelIsNotEmpty() {
 		//Given: When user allocate the parking space
-		CarPark carpark = new CarPark();
-		carpark.setID(1);
-		carpark.setNumberOfHours(4);
-		carpark.setCarNumber("KA 1111");
+		int parkingSlotID = 1;
+		int NumberOfHours = 4; 
+		String CarNumber = "A12345";
+		CarPark acutalResult = CarParkHelper.ValidCarParkModel();
 		
 		//when: call method to allocate the car park
-		CarPark expected = _carParkingList.GenerateParkingTicket(carpark);
+		CarPark expectedResult = carParkingList.GenerateParkingTicket(parkingSlotID, NumberOfHours, CarNumber);
 		
 		//then: Parking status should be changed and Ticket number should be generated
-		assertEquals(ParkingStatus.ALLOCATED, expected.getStatus());
+		assertNotNull(expectedResult);
+		assertEquals(acutalResult.getStatus(), expectedResult.getStatus());
 	}
 	
 	@Test
-	public void WhenParkingSlotIsAvailable() throws Exception {
+	public void WhenResetParkingDetail() throws Exception {
 		//Given: When user allocate the parking space
 		int parkingSlot = 1;
+		CarPark actualResult = CarParkHelper.RemoveparkingSlot();
 		
 		//when: call method to allocate the car park
-		CarPark expected = _carParkingList.ResetParkingDetail(parkingSlot);
+		CarPark expectedResult = carParkingList.ResetParkingDetail(parkingSlot);
 		
 		//then: Parking status should be changed and Ticket number should be generated
-		assertEquals(ParkingStatus.AMENDED, expected.getStatus());
-		assertEquals(0, expected.getNumberOfHours());
-		assertEquals(null, expected.getCarNumber());
-		assertEquals(null, expected.getTicketNumber());
+		assertNotNull(expectedResult);
+		assertEquals(actualResult.getStatus(), expectedResult.getStatus());
+		assertEquals(actualResult.getMessage(), expectedResult.getMessage());
 	}
 	
 	@Test
-	public void WhenUserReAllocateParkingSlot() {
+	public void WhenGenerateParkingTicketForReAllocation() {
 		//Given: When user reallocate the same parking slot
-		CarPark carpark = new CarPark();
-		carpark.setID(1);
-		carpark.setNumberOfHours(3);
-		carpark.setCarNumber("KA 1111");
-		carpark.setTicketNumber("A45678");
+		int parkingSlot = 1;
+		CarPark actualResult = CarParkHelper.ReallocateValidCarParkModel();
 		
 		//When: Call method to reallocate the same parking slot
-		CarPark expected = _carParkingList.GenerateParkingTicketForReAllocation(carpark);
+		CarPark expectedResult = carParkingList.GenerateParkingTicketForReAllocation(parkingSlot);
 		
 		//then: User can able to reallocated the same spot
-		assertEquals(ParkingStatus.REALLOCATED, expected.getStatus());
-		assertEquals("A45679", expected.getTicketNumber());
+		assertEquals(actualResult.getStatus(), expectedResult.getStatus());
+		assertEquals(actualResult.getMessage(), expectedResult.getMessage());
+		assertEquals(actualResult.getTicketNumber(), expectedResult.getTicketNumber());
 	}
 
 }

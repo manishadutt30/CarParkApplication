@@ -4,66 +4,58 @@ import java.util.Date;
 
 public class CarPark {
 
-	private int ID;
-	private String Status;
-    private Date StartTime;
-    private int NumberOfHours;
-    private String CarNumber;
-    private String TicketNumber;
-    
-    //public CarPark(int ID, Date StartTime, int NumberOfHours, String CarNumber, String TicketNumber) {
-	//	this.ID = ID;
-	//	this.StartTime = StartTime;
-	//	this.NumberOfHours = NumberOfHours;
-	//	this.CarNumber = CarNumber;
-	//	this.TicketNumber = TicketNumber;
-	//}
+	private int iD;
+	private String status;;
+    private int numberOfHours;
+    private String carNumber;
+    private String ticketNumber;
+    private String message;
     
     public void setID(int ID) {
-    	this.ID = ID;
+    	this.iD = ID;
     }
     
     public int getID() {
-    	return this.ID;
+    	return this.iD;
     }
     
     public void setStatus(String Status) {
-    	this.Status = Status;
+    	this.status = Status;
     }
     
     public String getStatus() {
-    	return this.Status;
-    }
-    
-    public void setStartTime(Date StartTime) {
-    	this.StartTime = StartTime;
-    }
-    
-    public Date getStartTime() {
-    	return this.StartTime;
+    	return this.status;
     }
     
     public void setNumberOfHours(int NumberOfHours) {
-    	this.NumberOfHours = NumberOfHours;
+    	this.numberOfHours = NumberOfHours;
     }
     
     public int getNumberOfHours() {
-    	return this.NumberOfHours;
+    	return this.numberOfHours;
     }
     
     public void setCarNumber(String CarNumber) {
-    	this.CarNumber = CarNumber;
+    	this.carNumber = CarNumber;
     }
     
     public String getCarNumber() {
-    	return this.CarNumber;
+    	return this.carNumber;
     }
     
     public void setTicketNumber(String TicketNumber) {
-    	this.TicketNumber = TicketNumber;
+    	this.ticketNumber = TicketNumber;
     }
     
     public String getTicketNumber() {
-    	return this.TicketNumber;
+    	return this.ticketNumber;
+    }
+    
+    public void setMessage(String Message) {
+    	this.message = Message;
+    }
+    
+    public String getMessage() {
+    	return this.message;
     }
 }
